@@ -1,5 +1,48 @@
 spring:
+  profiles:
+    active: default
+  application:
+    name: currency-exchange
+  config:
+    import: optional:configserver:http://localhost:8888
+  liquibase:
+    enabled: true
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    change-log: classpath:/db/migrations/db.changelog-master.yaml
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5438/currency_db
     username: user1
-    passworf: user1
+    password: user1
+  jpa:
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      #liqubase will handle all migrations
+      ddl-auto: none
+
+    defer-datasource-initialization: false
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+#    template:
+#      default-topic: currencyInfo
+    consumer:
+      group-id: currencyExchangeId
+      auto-offset-reset: earliest
+logging:
+  level:
+    liquibase: WARN
+    root: WARN
+    web: WARN
+    org:
+      hibernate:
+        SQL: DEBUG
+eureka:
+  client:
+    service-url:
+      defatul-zone: http://localhost:8761/eureka
