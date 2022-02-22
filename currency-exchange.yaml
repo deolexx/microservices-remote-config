@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5438/currency_db
+    username: user1
+    passworf: user1
